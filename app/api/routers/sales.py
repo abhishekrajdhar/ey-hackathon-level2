@@ -1,6 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, Query
+from sqlalchemy.orm import Session
+
 from app.domain.agents.sales_agent import SalesAgent
+from app.db.session import get_db
 from app.models.schemas import RFPSummary
 
 router = APIRouter(prefix="/sales", tags=["sales"])
@@ -20,11 +23,7 @@ def scan_rfps(
         description="List of URLs for Sales Agent to scan",
     ),
     months: int = 3,
+    db: Session = Depends(get_db),
     agent: SalesAgent = Depends(get_sales_agent),
 ):
-    """
-    Sales Agent:
-    - Scans given URLs
-    - Returns RFPs due in the next `months` months.
-    """
-    return agent.scan_rfps(urls, within_months=months)
+    return agent.scan_rfps(db, urls, within_months=months)

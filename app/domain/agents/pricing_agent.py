@@ -1,22 +1,30 @@
 from typing import List
-from app.data.pricing import SKU_UNIT_PRICE, TEST_PRICE
+from sqlalchemy.orm import Session
+
+from app.db import repositories
+from app.db import models as db_models
 from app.models.schemas import LineItemMatch, PricingRow, PricingSummary
 
 
 class PricingAgent:
-    """Assigns prices to selected SKUs and tests, consolidates totals."""
+    """Assigns prices to selected SKUs and tests, using DB tables."""
 
     def price_line_item(
         self,
+        db: Session,
         line_match: LineItemMatch,
-        tests: List[str],
+        tests: list[db_models.RFPTest],
     ) -> PricingRow:
         sku = line_match.selected_sku.sku
         qty = line_match.quantity_m
-        unit_price = SKU_UNIT_PRICE.get(sku, 0.0)
+
+        unit_price = repositories.get_sku_price(db, sku)
         material_cost = unit_price * qty
 
-        tests_cost = sum(TEST_PRICE.get(t, 0.0) for t in tests)
+        test_codes = [t.test_code for t in tests]
+        test_price_map = repositories.get_test_prices(db, test_codes)
+        tests_cost = sum(test_price_map.get(code, 0.0) for code in test_codes)
+
         total_cost = material_cost + tests_cost
 
         return PricingRow(
@@ -31,15 +39,16 @@ class PricingAgent:
 
     def price_rfp(
         self,
+        db: Session,
         technical_table: List[LineItemMatch],
-        tests: List[str],
+        tests: list[db_models.RFPTest],
     ) -> PricingSummary:
         rows: List[PricingRow] = []
         total_material = 0.0
         total_tests = 0.0
 
         for line in technical_table:
-            row = self.price_line_item(line, tests)
+            row = self.price_line_item(db, line, tests)
             rows.append(row)
             total_material += row.material_cost
             total_tests += row.tests_cost

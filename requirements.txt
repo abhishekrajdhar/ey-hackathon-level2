@@ -9,5 +9,8 @@ pdf2image
 scikit-learn
 pillow
 pydantic-settings
-
+python-dotenv
+python-multipart
+SQLAlchemy>=2.0
+psycopg2-binary
 

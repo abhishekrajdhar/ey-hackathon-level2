@@ -1,31 +1,31 @@
 from typing import List
-from datetime import date, timedelta
-from app.data.rfp_listings import RFP_LISTINGS, TODAY
+from datetime import date
+from sqlalchemy.orm import Session
+
+from app.db import repositories
 from app.models.schemas import RFPSummary
+from app.domain.llm import generate_text
 
 
 class SalesAgent:
-    """Identifies RFPs from URLs and summarizes them."""
+    """Identifies RFPs and prepares summaries."""
 
-    def scan_rfps(self, urls: List[str], within_months: int = 3) -> List[RFPSummary]:
-        cutoff_date = TODAY + timedelta(days=within_months * 30)
+    def scan_rfps(
+        self, db: Session, urls: List[str], within_months: int = 3
+    ) -> List[RFPSummary]:
+        rfps = repositories.get_rfps_due_within(db, urls, within_months)
         results: List[RFPSummary] = []
 
-        for rfp in RFP_LISTINGS:
-            if rfp["source_url"] not in urls:
-                continue
-            if rfp["due_date"] > cutoff_date:
-                continue
-
-            days_to_due = (rfp["due_date"] - TODAY).days
-            short_scope = ", ".join(li["description"] for li in rfp["scope_of_supply"])
+        for rfp in rfps:
+            days_to_due = (rfp.due_date - date.today()).days
+            short_scope = ", ".join(li.description for li in rfp.line_items)
 
             results.append(
                 RFPSummary(
-                    id=rfp["id"],
-                    title=rfp["title"],
-                    source_url=rfp["source_url"],
-                    due_date=rfp["due_date"],
+                    id=rfp.external_id,
+                    title=rfp.title,
+                    source_url=rfp.source_url,
+                    due_date=rfp.due_date,
                     days_to_due=days_to_due,
                     short_scope_summary=short_scope[:200],
                 )
@@ -36,3 +36,44 @@ class SalesAgent:
 
     def choose_rfp_for_response(self, rfps: List[RFPSummary]) -> RFPSummary | None:
         return rfps[0] if rfps else None
+
+    def summarize_for_roles(self, rfp) -> dict[str, str]:
+        """
+        Uses Gemini to create role-specific summaries from the RFP object.
+        """
+        base_text = "\n".join(
+            f"Line {li.line_no}: {li.description}, qty={li.quantity_m} m"
+            for li in rfp.line_items
+        )
+        tests_text = ", ".join(t.test_code for t in rfp.tests)
+
+        technical_prompt = f"""
+You are a cable design engineer.
+
+RFP scope:
+{base_text}
+
+Summarize ONLY the technical scope of supply in bullet points.
+"""
+        pricing_prompt = f"""
+You are a pricing analyst.
+
+RFP tests and acceptance requirements:
+{tests_text}
+
+Summarize the tests and any cost drivers in 5 bullets.
+"""
+        management_prompt = f"""
+You are a sales manager.
+
+RFP title: {rfp.title}
+Due date: {rfp.due_date}
+
+Write a crisp 3-line business summary focusing on opportunity size and urgency.
+"""
+
+        return {
+            "technical_summary": generate_text(technical_prompt),
+            "pricing_summary": generate_text(pricing_prompt),
+            "management_summary": generate_text(management_prompt),
+        }
