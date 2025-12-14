@@ -30,8 +30,8 @@ The **Agentic RFP Backend** is a powerful system designed to automate the end-to
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository_url>
-    cd ey
+    git clone https://github.com/abhishekrajdhar/ey-hackathon-level2
+    cd ey-hackathon-level2
     ```
 
 2.  **Create a virtual environment:**
