@@ -48,4 +48,22 @@ class PricingSummary(BaseModel):
 class FullRFPResponse(BaseModel):
     rfp_summary: RFPSummary
     technical_table: List[LineItemMatch]
-    pricing_table: PricingSummary
+
+class ProductCreate(BaseModel):
+    sku: str
+    name: str
+    category: str
+    conductor: str
+    insulation: str
+    voltage_kv: float
+    cores: float
+    size_sqmm: float
+    application: str
+    armoured: bool
+    # Optional initial price
+    unit_price: float = 0.0
+
+
+class PriceUpdate(BaseModel):
+    sku: str
+    unit_price: float

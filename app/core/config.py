@@ -9,7 +9,7 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+psycopg2://user:password@localhost:5432/rfp_db"
     gemini_api_key: str = "GEMINI_API_KEY"
-    gemini_model: str = "models/gemini-2.0-flash"
+    gemini_model: str = "models/gemini-2.5-flash"
 
     class Config:
         env_file = ".env"

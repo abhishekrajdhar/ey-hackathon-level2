@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.core.config import get_settings
 from app.core.logging import setup_logging
-from app.api.routers import health, sales, pipeline
+from app.api.routers import health, sales, pipeline, inventory
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -26,3 +26,4 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(sales.router, prefix=settings.api_v1_prefix)
 app.include_router(pipeline.router, prefix=settings.api_v1_prefix)
+app.include_router(inventory.router, prefix=settings.api_v1_prefix)

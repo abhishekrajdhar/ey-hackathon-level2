@@ -13,4 +13,7 @@ python-dotenv
 python-multipart
 SQLAlchemy>=2.0
 psycopg2-binary
-
+selenium
+webdriver-manager
+beautifulsoup4
+requests

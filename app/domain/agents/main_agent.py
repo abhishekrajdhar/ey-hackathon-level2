@@ -24,9 +24,9 @@ class MainAgent:
         self.tech = TechnicalAgent()
         self.pricing = PricingAgent()
 
-    def run_full_pipeline(self, db: Session, urls: List[str]) -> FullRFPResponse:
+    def run_full_pipeline(self, db: Session, urls: List[str], live_mode: bool = False) -> FullRFPResponse:
         # 1) Sales Agent
-        candidates: List[RFPSummary] = self.sales.scan_rfps(db, urls)
+        candidates: List[RFPSummary] = self.sales.scan_rfps(db, urls, live_mode=live_mode)
         chosen = self.sales.choose_rfp_for_response(candidates)
         if not chosen:
             raise HTTPException(status_code=404, detail="No qualifying RFPs found.")

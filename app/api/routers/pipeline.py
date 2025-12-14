@@ -19,7 +19,8 @@ def run_full_pipeline(
         ],
         description="List of URLs that may contain RFP listings.",
     ),
+    live_mode: bool = Query(False, description="Enable live scraping instead of DB mock data."),
     db: Session = Depends(get_db),
     main_agent: MainAgent = Depends(get_main_agent),
 ):
-    return main_agent.run_full_pipeline(db, urls)
+    return main_agent.run_full_pipeline(db, urls, live_mode=live_mode)
