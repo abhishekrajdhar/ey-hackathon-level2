@@ -10,6 +10,9 @@ class RFPSummary(BaseModel):
     due_date: date
     days_to_due: int
     short_scope_summary: str
+    score: float = 0.0
+    product_alignment_score: float = 0.0
+    time_readiness_score: float = 0.0
 
 
 class SpecMatchEntry(BaseModel):

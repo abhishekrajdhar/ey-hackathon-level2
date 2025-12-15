@@ -14,8 +14,7 @@ router = APIRouter(prefix="/pipeline", tags=["pipeline"])
 def run_full_pipeline(
     urls: List[str] = Query(
         default=[
-            "https://example-lstk1.com/tenders",
-            "https://example-lstk2.com/rfps",
+            "http://test.com",
         ],
         description="List of URLs that may contain RFP listings.",
     ),

@@ -9,7 +9,7 @@ Base URL: `https://example.com/api/v1`
 
 **Parameters**:
 - `urls` (query, list[str]): List of RFP portal URLs to scan.
-  - Default: `["https://example-lstk1.com/tenders", "https://example-lstk2.com/rfps"]`
+  - Default: `["http://test.com", "http://global-tenders.com"]`
 - `months` (query, int): Lookahead window in months. Default: `3`.
 
 **Response**: `List[RFPSummary]`

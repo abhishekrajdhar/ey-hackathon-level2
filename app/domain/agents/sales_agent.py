@@ -28,10 +28,43 @@ class SalesAgent:
         
         # Whether live or not, we read the refined data from DB
         rfps = repositories.get_rfps_due_within(db, urls, within_months)
+        
+        # Pre-fetch product specs for alignment check
+        all_products = repositories.get_all_products(db)
+        # Create a set of (conductor, insulation) tuples for fast lookup
+        inventory_specs = {
+            (p.conductor.lower(), p.insulation.lower()) 
+            for p in all_products 
+            if p.conductor and p.insulation
+        }
+
         results: List[RFPSummary] = []
 
         for rfp in rfps:
             days_to_due = (rfp.due_date - date.today()).days
+            
+            # --- Scoring Logic ---
+            # 1. Product Alignment (Weight 0.6)
+            total_lines = len(rfp.line_items)
+            matched_lines = 0
+            if total_lines > 0:
+                for li in rfp.line_items:
+                    key = (li.conductor.lower(), li.insulation.lower())
+                    if key in inventory_specs:
+                        matched_lines += 1
+                prod_score = (matched_lines / total_lines) * 100.0
+            else:
+                prod_score = 0.0
+            
+            # 2. Time Readiness (Weight 0.4)
+            # Logic: < 7 days = 0, peaks at 30 days
+            if days_to_due < 7:
+                time_score = 0.0
+            else:
+                time_score = min(100.0, (days_to_due / 30.0) * 100.0)
+
+            final_score = (0.6 * prod_score) + (0.4 * time_score)
+            
             short_scope = ", ".join(li.description for li in rfp.line_items)
 
             results.append(
@@ -42,10 +75,14 @@ class SalesAgent:
                     due_date=rfp.due_date,
                     days_to_due=days_to_due,
                     short_scope_summary=short_scope[:200],
+                    score=round(final_score, 2),
+                    product_alignment_score=round(prod_score, 2),
+                    time_readiness_score=round(time_score, 2),
                 )
             )
 
-        results.sort(key=lambda r: r.due_date)
+        # Sort by Final Score Descending
+        results.sort(key=lambda r: r.score, reverse=True)
         return results
 
     def _scrape_and_ingest(self, db: Session, urls: List[str]):

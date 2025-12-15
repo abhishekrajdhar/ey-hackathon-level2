@@ -172,6 +172,211 @@ def seed_db():
                     }
                 ],
                  "tests": ["routine_electrical_tests", "type_test_hv"]
+            },
+            # --- NEW SAMPLE RFPS ---
+            {
+                "external_id": "RFP-003",
+                "title": "High Voltage Transmission Upgrade - North Region",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=60),
+                "items": [
+                     {
+                        "line_no": 1, "description": "11kV 3C 240sqmm Cu XLPE Transmission Cable", "quantity_m": 15000,
+                        "conductor": "copper", "insulation": "XLPE", "voltage_kv": 11.0, "cores": 3, "size_sqmm": 240, "armoured": True
+                    }
+                ],
+                 "tests": ["type_test_hv", "insulation_resistance_test"]
+            },
+            {
+                "external_id": "RFP-004",
+                "title": "Rural Electrification Phase IV",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=20),
+                "items": [
+                     {
+                        "line_no": 1, "description": "3.5C 185sqmm Al XLPE Distribution Cable", "quantity_m": 25000,
+                        "conductor": "aluminum", "insulation": "XLPE", "voltage_kv": 1.1, "cores": 3.5, "size_sqmm": 185, "armoured": True
+                    },
+                     {
+                        "line_no": 2, "description": "4C 25sqmm Al PVC Street Light Cable", "quantity_m": 10000,
+                        "conductor": "aluminum", "insulation": "PVC", "voltage_kv": 1.1, "cores": 4, "size_sqmm": 25, "armoured": True
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
+            },
+            {
+                "external_id": "RFP-005",
+                "title": "Urgent Repair Works - City South",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=5),
+                "items": [
+                     {
+                        "line_no": 1, "description": "4C 16sqmm Cu XLPE Feeder Cable (Immediate)", "quantity_m": 500,
+                        "conductor": "copper", "insulation": "XLPE", "voltage_kv": 1.1, "cores": 4, "size_sqmm": 16, "armoured": True
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
+            },
+            {
+                "external_id": "RFP-006",
+                "title": "Future Project - Airport Expansion",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=120),
+                "items": [
+                     {
+                        "line_no": 1, "description": "4C 16sqmm Cu XLPE Fire Safe", "quantity_m": 8000,
+                        "conductor": "copper", "insulation": "XLPE", "voltage_kv": 1.1, "cores": 4, "size_sqmm": 16, "armoured": True
+                    }
+                ],
+                 "tests": ["fire_resistance_test", "routine_electrical_tests"]
+            },
+             {
+                "external_id": "RFP-007",
+                "title": "Industrial Zone Complex B",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=15),
+                "items": [
+                     {
+                        "line_no": 1, "description": "2C 4sqmm Cu PVC Control Cable", "quantity_m": 2000,
+                        "conductor": "copper", "insulation": "PVC", "voltage_kv": 1.1, "cores": 2, "size_sqmm": 4, "armoured": False
+                    },
+                    {
+                        "line_no": 2, "description": "4C 16sqmm Cu XLPE Power", "quantity_m": 1200,
+                        "conductor": "copper", "insulation": "XLPE", "voltage_kv": 1.1, "cores": 4, "size_sqmm": 16, "armoured": True
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
+            },
+            {
+                "external_id": "RFP-008",
+                "title": "Solar Farm DC Cabling Pilot",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=40),
+                "items": [
+                     {
+                        "line_no": 1, "description": "SOLAR DC Cable (No exact match expected)", "quantity_m": 5000,
+                        "conductor": "tinned_copper", "insulation": "xlpo", "voltage_kv": 1.5, "cores": 1, "size_sqmm": 4, "armoured": False
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
+            },
+            {
+                "external_id": "RFP-009",
+                "title": "Metro Station - Emergency Systems",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=25),
+                "items": [
+                     {
+                        "line_no": 1, "description": "4C 16sqmm Cu XLPE Fire Resistant", "quantity_m": 2500,
+                        "conductor": "copper", "insulation": "XLPE", "voltage_kv": 1.1, "cores": 4, "size_sqmm": 16, "armoured": True
+                    }
+                ],
+                 "tests": ["fire_resistance_test"]
+            },
+             {
+                "external_id": "RFP-010",
+                "title": "Small Depot Maintenance Stock",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=10),
+                "items": [
+                     {
+                        "line_no": 1, "description": "2C 4sqmm Cu PVC", "quantity_m": 100,
+                        "conductor": "copper", "insulation": "PVC", "voltage_kv": 1.1, "cores": 2, "size_sqmm": 4, "armoured": False
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
+            },
+            {
+                "external_id": "RFP-011",
+                "title": "Export Order - Middle East Grid",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=90),
+                "items": [
+                     {
+                         "line_no": 1, "description": "11kV 3C 240sqmm Cu XLPE Export Grade", "quantity_m": 50000,
+                        "conductor": "copper", "insulation": "XLPE", "voltage_kv": 11.0, "cores": 3, "size_sqmm": 240, "armoured": True
+                    }
+                ],
+                 "tests": ["type_test_hv", "routine_electrical_tests", "insulation_resistance_test"]
+            },
+            {
+                "external_id": "RFP-012",
+                "title": "Residential Complex - Phase 2",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=35),
+                "items": [
+                     {
+                        "line_no": 1, "description": "4C 25sqmm Al PVC Street Light", "quantity_m": 2000,
+                         "conductor": "aluminum", "insulation": "PVC", "voltage_kv": 1.1, "cores": 4, "size_sqmm": 25, "armoured": True
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
+            },
+            # --- NEW RFPS (Global Tenders) ---
+            {
+                "external_id": "RFP-013",
+                "title": "International Airport Upgrade (Global Tender)",
+                "source_url": "http://global-tenders.com",
+                "due_date": date.today() + timedelta(days=180),
+                "items": [
+                     {
+                        "line_no": 1, "description": "11kV 3C 240sqmm Cu XLPE FRLS", "quantity_m": 40000,
+                        "conductor": "copper", "insulation": "XLPE", "voltage_kv": 11.0, "cores": 3, "size_sqmm": 240, "armoured": True
+                    }
+                ],
+                 "tests": ["fire_resistance_test", "type_test_hv"]
+            },
+            {
+                "external_id": "RFP-014",
+                "title": "Offshore Wind Farm Interconnect",
+                "source_url": "http://global-tenders.com",
+                "due_date": date.today() + timedelta(days=90),
+                "items": [
+                     {
+                        "line_no": 1, "description": "33kV 3C 400sqmm Cu Subsea Cable (No match expected)", "quantity_m": 12000,
+                        "conductor": "copper", "insulation": "EPR", "voltage_kv": 33.0, "cores": 3, "size_sqmm": 400, "armoured": True
+                    }
+                ],
+                 "tests": ["type_test_hv"]
+            },
+             {
+                "external_id": "RFP-015",
+                "title": "Cross-border Pipeline Trace Heating",
+                "source_url": "http://global-tenders.com",
+                "due_date": date.today() + timedelta(days=45),
+                "items": [
+                     {
+                        "line_no": 1, "description": "Trace Heating Cable 20W/m", "quantity_m": 6000,
+                        "conductor": "nichrome", "insulation": "teflon", "voltage_kv": 0.23, "cores": 2, "size_sqmm": 2.5, "armoured": True
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
+            },
+            {
+                "external_id": "RFP-016",
+                "title": "Data Center Power Reticulation",
+                "source_url": "http://global-tenders.com",
+                "due_date": date.today() + timedelta(days=30),
+                "items": [
+                     {
+                        "line_no": 1, "description": "4C 240sqmm Al XLPE Power", "quantity_m": 1500,
+                        "conductor": "aluminum", "insulation": "XLPE", "voltage_kv": 1.1, "cores": 4, "size_sqmm": 240, "armoured": True
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
+            },
+            {
+                "external_id": "RFP-017",
+                "title": "Smart City Pilot Project",
+                "source_url": "http://global-tenders.com",
+                "due_date": date.today() + timedelta(days=75),
+                "items": [
+                     {
+                        "line_no": 1, "description": "Optical Fiber Hybrid Cable (No match)", "quantity_m": 8000,
+                        "conductor": "glass", "insulation": "pvc", "voltage_kv": 0.0, "cores": 12, "size_sqmm": 0.0, "armoured": True
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
             }
         ]
 

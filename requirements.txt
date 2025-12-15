@@ -17,3 +17,4 @@ selenium
 webdriver-manager
 beautifulsoup4
 requests
+httpx

@@ -17,8 +17,7 @@ def get_sales_agent() -> SalesAgent:
 def scan_rfps(
     urls: List[str] = Query(
         default=[
-            "https://example-lstk1.com/tenders",
-            "https://example-lstk2.com/rfps",
+            "http://test.com",
         ],
         description="List of URLs for Sales Agent to scan",
     ),
