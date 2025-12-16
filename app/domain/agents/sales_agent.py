@@ -187,8 +187,8 @@ class SalesAgent:
             logger.error(f"DB Save failed: {e}")
             db.rollback()
 
-    def choose_rfp_for_response(self, rfps: List[RFPSummary]) -> RFPSummary | None:
-        return rfps[0] if rfps else None
+    def choose_rfp_for_response(self, rfps: List[RFPSummary], limit: int = 4) -> List[RFPSummary]:
+        return rfps[:limit]
 
     def summarize_for_roles(self, rfp) -> dict[str, str]:
         """

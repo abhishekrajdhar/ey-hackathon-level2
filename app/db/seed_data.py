@@ -377,6 +377,46 @@ def seed_db():
                     }
                 ],
                  "tests": ["routine_electrical_tests"]
+            },
+            # --- NEW API SAMPLES ---
+            {
+                "external_id": "RFP-018",
+                "title": "Regional Hospital Power Upgrade",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=60),
+                "items": [
+                     {
+                        "line_no": 1, "description": "4C 50sqmm Cu XLPE LSZH (Low Smoke Zero Halogen)", "quantity_m": 3000,
+                        "conductor": "copper", "insulation": "XLPE", "voltage_kv": 1.1, "cores": 4, "size_sqmm": 50, "armoured": True
+                    }
+                ],
+                 "tests": ["fire_resistance_test"]
+            },
+            {
+                "external_id": "RFP-019",
+                "title": "Coastal Resort Development",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=120),
+                "items": [
+                     {
+                        "line_no": 1, "description": "3.5C 240sqmm Al XLPE UV Resistant", "quantity_m": 15000,
+                        "conductor": "aluminum", "insulation": "XLPE", "voltage_kv": 1.1, "cores": 3.5, "size_sqmm": 240, "armoured": True
+                    }
+                ],
+                 "tests": ["routine_electrical_tests"]
+            },
+            {
+                "external_id": "RFP-020",
+                "title": "Electric Vehicle Charging Infrastructure - Phase 1",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=45),
+                "items": [
+                     {
+                        "line_no": 1, "description": "DC Fast Charge Cable 4C 35sqmm", "quantity_m": 5000,
+                        "conductor": "copper", "insulation": "EPR", "voltage_kv": 1.0, "cores": 4, "size_sqmm": 35, "armoured": True
+                    }
+                ],
+                 "tests": ["routine_electrical_tests", "insulation_resistance_test"]
             }
         ]
 

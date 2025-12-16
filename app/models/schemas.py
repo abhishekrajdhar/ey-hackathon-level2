@@ -51,6 +51,7 @@ class PricingSummary(BaseModel):
 class FullRFPResponse(BaseModel):
     rfp_summary: RFPSummary
     technical_table: List[LineItemMatch]
+    pricing_table: PricingSummary
 
 class ProductCreate(BaseModel):
     sku: str

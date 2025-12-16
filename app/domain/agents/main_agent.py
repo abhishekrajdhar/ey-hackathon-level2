@@ -24,37 +24,41 @@ class MainAgent:
         self.tech = TechnicalAgent()
         self.pricing = PricingAgent()
 
-    def run_full_pipeline(self, db: Session, urls: List[str], live_mode: bool = False) -> FullRFPResponse:
+    def run_full_pipeline(self, db: Session, urls: List[str], live_mode: bool = False) -> List[FullRFPResponse]:
         # 1) Sales Agent
         candidates: List[RFPSummary] = self.sales.scan_rfps(db, urls, live_mode=live_mode)
-        chosen = self.sales.choose_rfp_for_response(candidates)
-        if not chosen:
-            raise HTTPException(status_code=404, detail="No qualifying RFPs found.")
+        chosen_list = self.sales.choose_rfp_for_response(candidates, limit=4)
+        
+        if not chosen_list:
+             # Return empty list instead of 404 for empty results
+            return []
 
-        rfp: db_models.RFP | None = repositories.get_rfp_by_external_id(
-            db, chosen.id
-        )
-        if not rfp:
-            raise HTTPException(status_code=500, detail="Selected RFP not found.")
+        results = []
+        for chosen in chosen_list:
+            rfp: db_models.RFP | None = repositories.get_rfp_by_external_id(
+                db, chosen.id
+            )
+            if not rfp:
+                continue
 
-        # 2) Technical
-        technical_table: List[LineItemMatch] = self.tech.process_rfp(db, rfp)
+            # 2) Technical
+            technical_table: List[LineItemMatch] = self.tech.process_rfp(db, rfp)
 
-        # 3) Pricing
-        pricing_table: PricingSummary = self.pricing.price_rfp(db, technical_table, rfp.tests)
+            # 3) Pricing
+            pricing_table: PricingSummary = self.pricing.price_rfp(db, technical_table, rfp.tests)
 
-        # 4) (Optional) LLM-generated textual proposal (not in schema, but you can add)
-        proposal_text = self._draft_proposal_text(chosen, technical_table, pricing_table)
+            # 4) (Optional) LLM-generated textual proposal (not in schema, but you can add)
+            # proposal_text = self._draft_proposal_text(chosen, technical_table, pricing_table)
 
-        # You can attach proposal_text somewhere (e.g. extend FullRFPResponse)
-        # For now you can log or return alongside.
-        # Example: add `proposal_text: str` field in FullRFPResponse.
+            results.append(
+                FullRFPResponse(
+                    rfp_summary=chosen,
+                    technical_table=technical_table,
+                    pricing_table=pricing_table,
+                )
+            )
 
-        return FullRFPResponse(
-            rfp_summary=chosen,
-            technical_table=technical_table,
-            pricing_table=pricing_table,
-        )
+        return results
 
     def _draft_proposal_text(
         self,
