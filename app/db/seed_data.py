@@ -139,6 +139,104 @@ def seed_db():
         # RFPs
         # -------------------------------
         rfps_data = [
+            # HIGH PRIORITY MULTI-LINE RFP (Will score highest)
+            {
+                "external_id": "RFP-000-MULTI",
+                "title": "#1 TNLV XLPE Power Cable, 3 Core, 300sqmm, Armoured",
+                "source_url": "http://test.com",
+                "due_date": date.today() + timedelta(days=31),
+                "items": [
+                    {
+                        "line_no": 1, 
+                        "description": "#1 TNLV XLPE Power Cable, 3 Core, 300sqmm, Armoured", 
+                        "quantity_m": 5000,
+                        "conductor": "copper", 
+                        "insulation": "XLPE", 
+                        "voltage_kv": 1.1, 
+                        "cores": 3, 
+                        "size_sqmm": 300, 
+                        "armoured": True
+                    },
+                    {
+                        "line_no": 2, 
+                        "description": "#2 1.1kV PVC Control Cable, 12 Core, 1.5sqmm, Unarmoured", 
+                        "quantity_m": 2000,
+                        "conductor": "copper", 
+                        "insulation": "PVC", 
+                        "voltage_kv": 1.1, 
+                        "cores": 12, 
+                        "size_sqmm": 1.5, 
+                        "armoured": False
+                    },
+                    {
+                        "line_no": 3, 
+                        "description": "#3 Enterprise Cloud Hosting & Managed Services", 
+                        "quantity_m": 12,
+                        "conductor": "copper", 
+                        "insulation": "XLPE", 
+                        "voltage_kv": 11.0, 
+                        "cores": 3, 
+                        "size_sqmm": 240, 
+                        "armoured": True
+                    },
+                    {
+                        "line_no": 4, 
+                        "description": "#4 Aluminum Distribution Cable 3.5C 185sqmm", 
+                        "quantity_m": 8000,
+                        "conductor": "aluminum", 
+                        "insulation": "XLPE", 
+                        "voltage_kv": 1.1, 
+                        "cores": 3.5, 
+                        "size_sqmm": 185, 
+                        "armoured": True
+                    },
+                    {
+                        "line_no": 5, 
+                        "description": "#5 Copper Feeder Cable 4C 16sqmm XLPE Armoured", 
+                        "quantity_m": 3500,
+                        "conductor": "copper", 
+                        "insulation": "XLPE", 
+                        "voltage_kv": 1.1, 
+                        "cores": 4, 
+                        "size_sqmm": 16, 
+                        "armoured": True
+                    },
+                    {
+                        "line_no": 6, 
+                        "description": "#6 Aluminum PVC Street Light Cable 4C 25sqmm", 
+                        "quantity_m": 4500,
+                        "conductor": "aluminum", 
+                        "insulation": "PVC", 
+                        "voltage_kv": 1.1, 
+                        "cores": 4, 
+                        "size_sqmm": 25, 
+                        "armoured": True
+                    },
+                    {
+                        "line_no": 7, 
+                        "description": "#7 Copper Control Cable 2C 4sqmm PVC Unarmoured", 
+                        "quantity_m": 1500,
+                        "conductor": "copper", 
+                        "insulation": "PVC", 
+                        "voltage_kv": 1.1, 
+                        "cores": 2, 
+                        "size_sqmm": 4, 
+                        "armoured": False
+                    },
+                    {
+                        "line_no": 8, 
+                        "description": "#8 High Voltage Transmission Cable 11kV 3C 240sqmm", 
+                        "quantity_m": 2500,
+                        "conductor": "copper", 
+                        "insulation": "XLPE", 
+                        "voltage_kv": 11.0, 
+                        "cores": 3, 
+                        "size_sqmm": 240, 
+                        "armoured": True
+                    }
+                ],
+                "tests": ["routine_electrical_tests", "insulation_resistance_test"]
+            },
             {
                 "external_id": "RFP-001",
                 "title": "Supply of LV Cables for Metro Depot",

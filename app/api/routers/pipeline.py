@@ -10,7 +10,7 @@ from app.models.schemas import FullRFPResponse
 router = APIRouter(prefix="/pipeline", tags=["pipeline"])
 
 
-@router.get("/run", response_model=List[FullRFPResponse])
+@router.get("/run", response_model=FullRFPResponse)
 def run_full_pipeline(
     urls: List[str] = Query(
         default=[

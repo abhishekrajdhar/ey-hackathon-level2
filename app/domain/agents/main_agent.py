@@ -24,41 +24,33 @@ class MainAgent:
         self.tech = TechnicalAgent()
         self.pricing = PricingAgent()
 
-    def run_full_pipeline(self, db: Session, urls: List[str], live_mode: bool = False) -> List[FullRFPResponse]:
-        # 1) Sales Agent
+    def run_full_pipeline(self, db: Session, urls: List[str], live_mode: bool = False) -> FullRFPResponse:
+        # 1) Sales Agent - get candidates and choose the best one
         candidates: List[RFPSummary] = self.sales.scan_rfps(db, urls, live_mode=live_mode)
-        chosen_list = self.sales.choose_rfp_for_response(candidates, limit=4)
+        chosen_list = self.sales.choose_rfp_for_response(candidates, limit=1)
         
         if not chosen_list:
-             # Return empty list instead of 404 for empty results
-            return []
+            raise HTTPException(status_code=404, detail="No RFPs found")
 
-        results = []
-        for chosen in chosen_list:
-            rfp: db_models.RFP | None = repositories.get_rfp_by_external_id(
-                db, chosen.id
-            )
-            if not rfp:
-                continue
+        # Process only the top-ranked RFP
+        chosen = chosen_list[0]
+        rfp: db_models.RFP | None = repositories.get_rfp_by_external_id(db, chosen.id)
+        
+        if not rfp:
+            raise HTTPException(status_code=404, detail="RFP not found in database")
 
-            # 2) Technical
-            technical_table: List[LineItemMatch] = self.tech.process_rfp(db, rfp)
+        # 2) Technical Agent - process all line items for this RFP
+        technical_table: List[LineItemMatch] = self.tech.process_rfp(db, rfp)
 
-            # 3) Pricing
-            pricing_table: PricingSummary = self.pricing.price_rfp(db, technical_table, rfp.tests)
+        # 3) Pricing Agent - calculate pricing for all line items
+        pricing_table: PricingSummary = self.pricing.price_rfp(db, technical_table, rfp.tests)
 
-            # 4) (Optional) LLM-generated textual proposal (not in schema, but you can add)
-            # proposal_text = self._draft_proposal_text(chosen, technical_table, pricing_table)
-
-            results.append(
-                FullRFPResponse(
-                    rfp_summary=chosen,
-                    technical_table=technical_table,
-                    pricing_table=pricing_table,
-                )
-            )
-
-        return results
+        # Return single RFP response with all its line items
+        return FullRFPResponse(
+            rfp_summary=chosen,
+            technical_table=technical_table,
+            pricing_table=pricing_table,
+        )
 
     def _draft_proposal_text(
         self,

@@ -81,8 +81,8 @@ class SalesAgent:
                 )
             )
 
-        # Sort by Final Score Descending
-        results.sort(key=lambda r: r.score, reverse=True)
+        # Sort by Final Score Descending, then by ID ascending (for consistent tiebreaking)
+        results.sort(key=lambda r: (-r.score, r.id))
         return results
 
     def _scrape_and_ingest(self, db: Session, urls: List[str]):
